@@ -2,7 +2,7 @@ defmodule MarTest do
   use ExUnit.Case
   doctest Mar
 
-  test "greets the world" do
-    assert Mar.hello() == :world
+  test "returns true" do
+    assert true
   end
 end

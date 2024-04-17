@@ -1,21 +1,48 @@
 # Mar
 
-**TODO: Add description**
+The Web in Elixir
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `mar` to your list of dependencies in `mix.exs`:
+Add Mar to your Mix file:
 
 ```elixir
-def deps do
-  [
-    {:mar, "~> 0.1.0"}
-  ]
+defmodule MyApp.Mix do
+  use Mix.Project
+  # ...
+  defp deps do
+    [
+      {:mar, "~> 0.1.0"}
+    ]
+  end
+  # ...
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/mar>.
+Add Mar as a child:
 
+```elixir
+defmodule MyApp.Application do
+  use Application
+  # ...
+  def start(_type, _args) do
+    children = [
+      Mar
+    ]
+
+    opts = [strategy: :one_for_one, name: MyApp.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+  # ...
+end
+```
+
+Add Mar to your page module:
+
+```elixir
+defmodule MyApp.Page do
+  use Mar
+
+  # TODO: Add callback example
+end
+```

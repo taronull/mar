@@ -2,17 +2,20 @@ defmodule Mar do
   @moduledoc """
   Documentation for `Mar`.
   """
+  def child_spec(options) do
+    options = Keyword.put(options, :plug, Mar.Plug)
 
-  @doc """
-  Hello world.
+    %{
+      id: __MODULE__,
+      start: {Bandit, :start_link, [options]}
+    }
+  end
 
-  ## Examples
-
-      iex> Mar.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defmacro __using__(_options) do
+    quote do
+      def hello do
+        :world
+      end
+    end
   end
 end
