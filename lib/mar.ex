@@ -20,10 +20,12 @@ defmodule Mar do
     end
   end
 
-  def child_spec(_options) do
+  def child_spec(options) do
+    options = Keyword.put(options, :plug, Mar.Plug)
+
     %{
       id: __MODULE__,
-      start: {Bandit, :start_link, [[plug: Mar.Plug]]}
+      start: {Bandit, :start_link, [options]}
     }
   end
 
