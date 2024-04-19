@@ -2,7 +2,7 @@ defmodule Mar.Plug do
   use Plug.Builder
 
   def init(options) do
-    {:consolidated, routes} = Mar.Router.__protocol__(:impls)
+    {:consolidated, routes} = Mar.Route.__protocol__(:impls)
     [{:routes, routes} | options]
   end
 
@@ -10,7 +10,7 @@ defmodule Mar.Plug do
     routes = Keyword.get(options, :routes)
     # TODO: Without a defstruct on the user, it's broken. Fix it.
     route =
-      Enum.find(routes, fn module -> Mar.Router.route(module.__struct__) == conn.request_path end)
+      Enum.find(routes, fn module -> Mar.Route.route(module.__struct__) == conn.request_path end)
 
     action = String.downcase(conn.method) |> String.to_atom()
     body = apply(route, action, [])

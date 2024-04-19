@@ -11,10 +11,10 @@ defmodule Mar do
       @behaviour unquote(__MODULE__)
 
       defimpl Mar.Route do
-        # __MODULE__ => Mar.Router.MyApp.MyModule
+        # __MODULE__ => Mar.Route.MyApp.MyModule
         def path(struct) do
           # TODO: One is compile-time, the other is runtime. Fix it.
-          unquote(options[:path]) || Mar.infer_path(struct.__struct__)
+          unquote(options[:path])
         end
       end
     end
@@ -27,15 +27,5 @@ defmodule Mar do
       id: __MODULE__,
       start: {Bandit, :start_link, [options]}
     }
-  end
-
-  def infer_path(module) do
-    # MyApp => /myapp
-    # This a temporary spec for demonstration purposes.
-    module
-    |> Module.split()
-    |> List.last()
-    |> String.downcase()
-    |> Path.absname("/")
   end
 end
