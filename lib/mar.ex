@@ -10,9 +10,9 @@ defmodule Mar do
     quote do
       @behaviour unquote(__MODULE__)
 
-      defimpl Mar.Router do
+      defimpl Mar.Route do
         # __MODULE__ => Mar.Router.MyApp.MyModule
-        def route(struct) do
+        def path(struct) do
           # TODO: One is compile-time, the other is runtime. Fix it.
           unquote(options[:path]) || Mar.infer_path(struct.__struct__)
         end
