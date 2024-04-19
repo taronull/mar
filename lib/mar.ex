@@ -11,11 +11,7 @@ defmodule Mar do
       @behaviour unquote(__MODULE__)
 
       defimpl Mar.Route do
-        # __MODULE__ => Mar.Route.MyApp.MyModule
-        def path(struct) do
-          # TODO: One is compile-time, the other is runtime. Fix it.
-          unquote(options[:path])
-        end
+        def path(struct), do: unquote(options[:path] || "/")
       end
     end
   end

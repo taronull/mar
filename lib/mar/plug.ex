@@ -8,9 +8,9 @@ defmodule Mar.Plug do
 
   def call(conn, options) do
     routes = Keyword.get(options, :routes)
-    # TODO: Without a defstruct on the user, it's broken. Fix it.
+
     route =
-      Enum.find(routes, fn module -> Mar.Route.route(module.__struct__) == conn.request_path end)
+      Enum.find(routes, fn module -> Mar.Route.path(module.__struct__) == conn.request_path end)
 
     action = String.downcase(conn.method) |> String.to_atom()
     body = apply(route, action, [])
