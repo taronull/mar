@@ -13,13 +13,14 @@ defmodule Mar do
 
   defmacro __using__(options) do
     path = Keyword.get(options, :path, "/")
-    params = parse_path_params(path) ++ Keyword.get(options, :params, [])
+    params = Keyword.get(options, :params, []) ++ parse_path_params(path)
 
     quote do
       @derive [Mar.Route]
       defstruct path: unquote(path),
                 params: unquote(params),
-                conn: %Plug.Conn{}
+                action: nil,
+                conn: nil
     end
   end
 

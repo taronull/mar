@@ -7,19 +7,15 @@ defmodule Mar.Router do
 
   def call(conn, _options) do
     route = route(conn.request_path)
-
     path_params = fetch_path_params(route.path, conn.request_path)
     params = Map.merge(conn.params, path_params)
-
     conn = %{conn | path_params: path_params, params: params}
-    route = %{route | params: load_params(route.params, params)}
+    route = %{route | params: load_params(route.params, params), action: load_action(conn.method)}
 
+    route = %{route | conn: conn}
     route = Mar.Route.before_action(route)
-
-    action = String.downcase(conn.method) |> String.to_atom()
-    response = apply(route.__struct__, action, route.params)
+    response = apply(route.__struct__, route.action, if_params(route.params))
     route = %{route | conn: respond(conn, response)}
-
     route = Mar.Route.after_action(route)
 
     send_resp(route.conn)
@@ -79,19 +75,22 @@ defmodule Mar.Router do
       if value, do: {route_param, value}, else: nil
     end)
     |> Enum.filter(& &1)
+    |> Enum.into(%{})
   end
 
-  defp respond(conn, body) when not is_tuple(body) do
+  defp load_action(http_method) do
+    String.downcase(http_method) |> String.to_atom()
+  end
+
+  defp respond(conn, body) when not is_tuple(body) and not is_nil(body) do
     conn
     |> put_resp_content_type(make_type(body))
     |> resp(200, make_body(body))
   end
 
   defp respond(conn, {status, headers, body}) when is_number(status) and is_list(headers) do
-    conn =
-      conn
-      |> put_resp_content_type(make_type(body))
-      |> resp(status, make_body(body))
+    conn = if body, do: put_resp_content_type(conn, make_type(body)), else: conn
+    conn = resp(conn, status, make_body(body))
 
     Enum.reduce(headers, conn, &adapt_header/2)
   end
@@ -99,11 +98,15 @@ defmodule Mar.Router do
   defp make_type(body) when is_binary(body), do: "text/plain"
   defp make_type(body) when is_map(body), do: "application/json"
 
-  defp make_body(body) when is_binary(body), do: body
   defp make_body(body) when is_map(body), do: Jason.encode!(body)
+  defp make_body(body) when is_nil(body), do: ""
+  defp make_body(body), do: body
 
   defp adapt_header({key, value}, conn) do
     key = Atom.to_string(key) |> String.replace("_", "-")
     Plug.Conn.put_resp_header(conn, key, value)
   end
+
+  defp if_params(params) when map_size(params) == 0, do: []
+  defp if_params(params), do: [params]
 end
