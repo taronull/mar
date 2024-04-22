@@ -4,11 +4,15 @@ defmodule Mar.MixProject do
   def project do
     [
       app: :mar,
-      version: "0.1.0",
+      version: "0.2.1",
       elixir: "~> 1.16",
-      description: "The Web in Elixir",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      name: "Mar",
+      description: "Simple Web in Elixir",
+      source_url: "https://github.com/taronull/mar",
+      homepage_url: "https://hexdocs.pm/mar",
+      docs: docs(),
       package: package()
     ]
   end
@@ -28,6 +32,14 @@ defmodule Mar.MixProject do
       {:ex_doc, "~> 0.0", only: :dev, runtime: false},
       {:bandit, "~> 1.4"},
       {:jason, "~> 1.4"}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "Mar",
+      logo: "priv/mar.png",
+      extras: ["README.md"]
     ]
   end
 

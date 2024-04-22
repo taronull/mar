@@ -1,4 +1,6 @@
 defmodule Mar.Plug do
+  @moduledoc false
+
   use Plug.Builder
 
   plug(Plug.Parsers,
