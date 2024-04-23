@@ -27,3 +27,6 @@ mar-*.tar
 
 # Elixir language server
 .elixir_ls/
+
+# MacOS artefacts
+.DS_Store

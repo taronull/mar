@@ -4,49 +4,58 @@ Simple Web in Elixir
 
 ## Installation
 
-Add Mar to your Mix file:
+If you don't have a project, create one:
+
+```sh
+$ mix new my_app --sup
+$ cd my_app
+```
+
+Add Mar to your dependencies in:
 
 ```elixir
-defmodule MyApp.Mix do
-  use Mix.Project
-  # ...
-  defp deps do
-    [
-      {:mar, "~> 0.1.0"}
-    ]
-  end
-  # ...
+# mix.exs
+defp deps do
+  [
+    {:mar, "~> 0.2.0"}
+  ]
 end
 ```
 
 Add Mar as a child:
 
 ```elixir
-defmodule MyApp.Application do
-  use Application
-  # ...
-  def start(_type, _args) do
-    children = [
-      Mar
-    ]
-
-    options = [strategy: :one_for_one, name: MyApp.Supervisor]
-    Supervisor.start_link(children, options)
-  end
+# lib/my_app/application.ex
+def start(_type, _args) do
+  children = [
+    Mar
+  ]
   # ...
 end
 ```
 
-Add Mar to your page module:
+Add Mar to your module to make it a route:
 
 ```elixir
+# lib/my_app/route.ex
 defmodule MyApp.Page do
   use Mar
 
-  def get(%{}) do
+  def get() do
     "Hello, world!"
   end
 end
+```
+
+Spin up a server:
+
+```sh
+$ mix run --no-halt
+```
+
+```sh
+$ curl localhost:4000
+# Hello, world!
 ```
 
 ## Use

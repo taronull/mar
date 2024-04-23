@@ -37,7 +37,7 @@ defmodule Mar.MixProject do
 
   defp docs do
     [
-      main: "Mar",
+      main: "readme",
       logo: "priv/mar.png",
       extras: ["README.md"]
     ]
