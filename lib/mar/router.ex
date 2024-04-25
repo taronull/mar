@@ -64,7 +64,7 @@ defmodule Mar.Router do
 
   defp fetch_path_params(route_path, path) do
     route_path
-    |> String.replace(~r/:(\w+)/, "(?<\\1>\\w+)")
+    |> String.replace(~r/:(\w+)/, "(?<\\1>[\\w-]+)")
     |> Regex.compile!()
     |> Regex.named_captures(path)
   end
