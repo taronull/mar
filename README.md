@@ -6,6 +6,23 @@
 
 Mar is a simple web framework written in Elixir functional programming language. The design of the library aims to provide a Flask-like experience for Elixir developers. It is a layer of abstraction on top of [Plug](https://github.com/elixir-plug/plug) powered by [Bandit](https://github.com/mtrudel/bandit).
 
+## Roadmap
+
+### 0.3
+
+- Find a value proposition [The discussion](https://elixirforum.com/t/62885) has generated ideas
+  - DSL for text protocols.
+  - Abstraction over web protocols
+  - Exit from MVC model
+- Protocol consolidation is fragile. Move module registry to ETS.
+- José says: put functions at the center, not modules.
+
+### 1.0
+
+- Full web development platform
+- HTMX integration
+- Zero-to-hero learning pages
+
 ## Design
 
 ```mermaid
